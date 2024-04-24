@@ -1,12 +1,17 @@
-
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+}
 
 .wrapper {
-    width: 420px;
-    background: transparent; 
+    width: 28%;
+    background: transparent;
     border: 2px solid rgba(255, 255, 255, .2);
     box-shadow: 0 0 10px rgba(0, 0, 0, .2);
     backdrop-filter: blur(30px);
-    color: #fff; 
+    color: #fff;
     border-radius: 10px;
     padding: 30px 40px;
 }
@@ -98,4 +103,3 @@
 .register-link p a:hover {
     text-decoration: underline;
 }
-
