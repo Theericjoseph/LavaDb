@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 export default function VolcanoList() {
     const [rowData, setRowData] = useState([]);
     const [value, setValue] = useState("");
+    const [dropDownValue, setDropDownvalue] = useState("");
     const [country, setCountry] = useState("");
     const [populatedWithin, setPopulatedWithin] = useState("");
     const navigate = useNavigate();
@@ -22,21 +23,26 @@ export default function VolcanoList() {
     ];
 
     useEffect(() => {
-        // Effect
-        fetch(`${config.host}/volcanoes?country=${country}${populatedWithin}`)
-            .then(res => res.json())
-            .then(data =>
-                data.map(volcano => {
-                    return {
-                        id: volcano.id,
-                        name: volcano.name,
-                        region: volcano.region,
-                        subregion: volcano.subregion
-                    };
+        if (country !== "") {
+            // Effect
+            fetch(`${config.host}/volcanoes?country=${country}${populatedWithin}`)
+                .then(res => res.json())
+                .then(data =>
+                    data.map(volcano => {
+                        return {
+                            id: volcano.id,
+                            name: volcano.name,
+                            region: volcano.region,
+                            subregion: volcano.subregion
+                        };
+                    })
+                )
+                .then(volcano => setRowData(volcano))
+                .catch(e => {
+                    console.error("Error fetching volcano data:", e);
                 })
-            )
-            .then(volcano => setRowData(volcano))
-            .catch(e => console.log(e))
+        }
+
     }, [country, populatedWithin])
 
     return (
@@ -54,17 +60,20 @@ export default function VolcanoList() {
                 />
                 <label htmlFor="populated_within">Populated within: </label>
                 <select id="populated_within" name="populated_within"
-                    value={populatedWithin}
-                    onChange={(e) => setPopulatedWithin(e.target.value)}
+                    value={dropDownValue}
+                    onChange={(e) => setDropDownvalue(e.target.value)}
                 >
                     <option value="">--</option>
                     <option value="&populatedWithin=5km">5km</option>
-                    <option value="&populatedWithin=10km">10km</option>
+                    <option value="&populatedWithin=10km" >10km</option>
                     <option value="&populatedWithin=30km">30km</option>
                     <option value="&populatedWithin=100km">100km</option>
                 </select>
                 <button type="button" name="search" id="search"
-                    onClick={(e) => setCountry(value)}
+                    onClick={(e) => {
+                        setCountry(value);
+                        setPopulatedWithin(dropDownValue);
+                    }}
                 >Search</button>
             </div>
             {
