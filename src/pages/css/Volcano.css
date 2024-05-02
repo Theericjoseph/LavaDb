@@ -1,5 +1,7 @@
 .container {
     color: #fff;
+    display: flex;
+    gap: 2rem;
 }
 
 .volcano {

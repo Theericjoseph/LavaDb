@@ -6,12 +6,13 @@ import "./css/Volcano.css";
 import { Map, Marker } from "pigeon-maps";
 import { maptiler } from 'pigeon-maps/providers';
 import { Button } from "reactstrap";
+import { useLogin } from "../context/LoginProvider";
 
 
 // Check authentication add to header
 export default function Volcano() {
     const [searchParams] = useSearchParams();
-    const [ifLoggedin, setIfLoggedIn] = useState(false);
+    const { isLoggedIn } = useLogin();
     const [volcanoData, setVolcanoData] = useState([]);
     const maptilerProvider = maptiler(config.map_api, 'basic');
     const navigate = useNavigate();
@@ -28,13 +29,25 @@ export default function Volcano() {
         const fetchVolcanoData = () => {
             const id = searchParams.get("id");
             const url = `${config.host}/volcano/${id}`;
+            const token = localStorage.getItem("token");
+            let header;
+            if (isLoggedIn) {
+                header = {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+            else {
+                header = {
+                    "Content-Type": "application/json"
+                }
+            }
+
+
 
             fetch(url, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`
-                },
+                headers: header
             })
                 .then((response) => {
                     if (!response.ok) {
@@ -52,7 +65,7 @@ export default function Volcano() {
         };
 
         fetchVolcanoData();
-    }, [searchParams]);
+    }, [searchParams, isLoggedIn]);
 
     if (!volcanoData) {
         return (<div>Loading....</div>)
@@ -66,9 +79,9 @@ export default function Volcano() {
                 <div className="page-title-container">
                     <h2>Volcano Name : {searchParams.get("name")}</h2>
                 </div>
-                <div className="container d-flex">
+                <div className="container">
 
-                    <div className="volcano_info flex-fill m-3 align-middle">
+                    <div className="volcano_info ">
 
                         <p>Country: {volcanoData.country}</p>
                         <p>Region: {volcanoData.region}</p>
@@ -79,13 +92,15 @@ export default function Volcano() {
                         <p>Latitude: {volcanoData.latitude} &deg;</p>
                         <p>Longitude: {volcanoData.longitude} &deg;</p>
                         {
-                            !ifLoggedin ? <div></div> :
+                            isLoggedIn ? (
                                 <div className="div">
                                     <p>population_5km: {volcanoData.population_5km} km</p>
                                     <p>population_10km: {volcanoData.population_10km} km</p>
                                     <p>population_30km: {volcanoData.population_30km} km</p>
                                     <p>population_100km: {volcanoData.population_100km} km</p>
                                 </div>
+                            )
+                                : <div></div>
                         }
                         <Button color="secondary"
                             onClick={() => navigate("/volcano_list")}
@@ -108,7 +123,7 @@ export default function Volcano() {
                         >
                             <Marker
                                 width={50}
-                                anchor={center}
+                                anchor={[+volcanoData.latitude, +volcanoData.longitude]}
                                 color={color}
                                 onClick={() => setHue(hue + 20)}
                             />
