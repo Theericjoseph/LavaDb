@@ -43,8 +43,6 @@ export default function Volcano() {
                 }
             }
 
-
-
             fetch(url, {
                 method: "GET",
                 headers: header

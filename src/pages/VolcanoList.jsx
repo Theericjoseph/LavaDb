@@ -6,6 +6,8 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css"
 import "ag-grid-community/styles/ag-theme-alpine.css"
 import { useNavigate } from "react-router-dom";
+import { SearchBar } from "../components/SearchBar";
+import { SearchResultsList } from "../components/SearchResultsList";
 
 export default function VolcanoList() {
     const [rowData, setRowData] = useState([]);
@@ -14,6 +16,7 @@ export default function VolcanoList() {
     const [country, setCountry] = useState("");
     const [populatedWithin, setPopulatedWithin] = useState("");
     const navigate = useNavigate();
+    const [results, setResults] = useState([]);
 
     const columns = [
         { headerName: "ID", field: "id", flex: 1 },
@@ -48,27 +51,33 @@ export default function VolcanoList() {
     return (
         <div className="conatainer">
             <div className="input-fiels">
-                <label htmlFor="country">Country</label>
-                <input
-                    type="text"
-                    name="country"
-                    id="country"
-                    value={value}
-                    onChange={(e) => {
-                        setValue(e.target.value);
-                    }}
-                />
-                <label htmlFor="populated_within">Populated within: </label>
-                <select id="populated_within" name="populated_within"
-                    value={dropDownValue}
-                    onChange={(e) => setDropDownvalue(e.target.value)}
-                >
-                    <option value="">--</option>
-                    <option value="&populatedWithin=5km">5km</option>
-                    <option value="&populatedWithin=10km" >10km</option>
-                    <option value="&populatedWithin=30km">30km</option>
-                    <option value="&populatedWithin=100km">100km</option>
-                </select>
+                <div className="search-bar-container">
+                    <SearchBar setResults={setResults} />
+                    <SearchResultsList results= {results}/>
+                    <label htmlFor="country">Country</label>
+                    <input
+                        type="text"
+                        name="country"
+                        id="country"
+                        value={value}
+                        onChange={(e) => {
+                            setValue(e.target.value);
+                        }}
+                    />
+                </div>
+                <div className="populated-container">
+                    <label htmlFor="populated_within">Populated within: </label>
+                    <select id="populated_within" name="populated_within"
+                        value={dropDownValue}
+                        onChange={(e) => setDropDownvalue(e.target.value)}
+                    >
+                        <option value="">--</option>
+                        <option value="&populatedWithin=5km">5km</option>
+                        <option value="&populatedWithin=10km" >10km</option>
+                        <option value="&populatedWithin=30km">30km</option>
+                        <option value="&populatedWithin=100km">100km</option>
+                    </select>
+                </div>
                 <button type="button" name="search" id="search"
                     onClick={(e) => {
                         setCountry(value);
