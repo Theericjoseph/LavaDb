@@ -1,7 +1,7 @@
 import React from "react";
 
-export const SearchResult = ({result}) => {
+export const SearchResult = ({ result, onClick }) => {
     return (
-        <div className="search-result">{result}</div>
+        <div className="search-result" onClick={() => onClick(result)}>{result}</div>
     )
 }

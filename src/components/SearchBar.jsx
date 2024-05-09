@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import config from "../components/config.json";
-import {FaSearch} from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 
-export const SearchBar = ({setResults}) => {
-    const [input, setInput] = useState("");
+export const SearchBar = ({ setResults, input, setInput }) => {
     const [countries, setCountries] = useState([]);
     useEffect(() => {
         fetchCountries();
@@ -28,7 +27,7 @@ export const SearchBar = ({setResults}) => {
             setResults([]);
             return;
         }
-        
+
         const filtered = countries.filter((country) =>
             country.toLowerCase().includes(value.toLowerCase())
         );
@@ -37,9 +36,9 @@ export const SearchBar = ({setResults}) => {
     return (
         <div className="input-wrapper">
             <FaSearch id="search-icon" />
-            <input placeholder="Type to search..." 
-            value={input} 
-            onChange={handleChange}/>
+            <input placeholder="Type a countries name"
+                value={input}
+                onChange={handleChange} />
         </div>
     )
 }

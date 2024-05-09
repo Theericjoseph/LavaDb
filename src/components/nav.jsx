@@ -24,7 +24,7 @@ export default function Nav() {
                 {
                     isLoggedIn ?
                         <li>
-                            <button onClick={logout}>Logout</button>
+                            <Link onClick={logout}>Logout</Link>
                         </li> :
                         <li>
                             <Link to="/login">Login</Link>

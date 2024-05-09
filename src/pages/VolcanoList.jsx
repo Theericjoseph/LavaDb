@@ -11,7 +11,7 @@ import { SearchResultsList } from "../components/SearchResultsList";
 
 export default function VolcanoList() {
     const [rowData, setRowData] = useState([]);
-    const [value, setValue] = useState("");
+    const [input, setInput] = useState("");
     const [dropDownValue, setDropDownvalue] = useState("");
     const [country, setCountry] = useState("");
     const [populatedWithin, setPopulatedWithin] = useState("");
@@ -48,49 +48,50 @@ export default function VolcanoList() {
 
     }, [country, populatedWithin])
 
+    const handleCountrySelect = (selectedCountry) => {
+        setInput(selectedCountry)
+        setResults([])
+
+    }
+
     return (
         <div className="conatainer">
-            <div className="input-fiels">
+            <div className="input-field">
                 <div className="search-bar-container">
-                    <SearchBar setResults={setResults} />
-                    <SearchResultsList results= {results}/>
-                    <label htmlFor="country">Country</label>
-                    <input
-                        type="text"
-                        name="country"
-                        id="country"
-                        value={value}
-                        onChange={(e) => {
-                            setValue(e.target.value);
-                        }}
-                    />
+                    <SearchBar setResults={setResults} input={input} setInput={setInput} />
+
                 </div>
                 <div className="populated-container">
-                    <label htmlFor="populated_within">Populated within: </label>
-                    <select id="populated_within" name="populated_within"
+                    <label htmlFor="populated_within" hidden>Populated within: </label>
+                    <select id="populated_within" name="populated_within" className="select-box"
                         value={dropDownValue}
                         onChange={(e) => setDropDownvalue(e.target.value)}
                     >
-                        <option value="">--</option>
+                        <option value="">Select a distance</option>
                         <option value="&populatedWithin=5km">5km</option>
                         <option value="&populatedWithin=10km" >10km</option>
                         <option value="&populatedWithin=30km">30km</option>
                         <option value="&populatedWithin=100km">100km</option>
+
                     </select>
+
                 </div>
                 <button type="button" name="search" id="search"
                     onClick={(e) => {
-                        setCountry(value);
+                        setCountry(input);
                         setPopulatedWithin(dropDownValue);
                     }}
                 >Search</button>
+            </div>
+            <div className="search-results-div">
+                <SearchResultsList results={results} onCountrySelect={handleCountrySelect} />
             </div>
             {
                 country.length === 0 ? <div></div> :
                     <div className="table_container">
                         <div id="myGrid" className="ag-theme-alpine-dark"
                             style={{
-                                height: "650px",
+                                height: "40rem",
                                 width: "100%"
                             }}>
                             <AgGridReact
