@@ -7,6 +7,8 @@ import { Map, Marker } from "pigeon-maps";
 import { maptiler } from 'pigeon-maps/providers';
 import { Button } from "reactstrap";
 import { useLogin } from "../context/LoginProvider";
+import {Chart as ChartJS, defaults} from "chart.js/auto";
+import {Bar} from "react-chartjs-2";
 
 
 // Check authentication add to header
@@ -71,66 +73,101 @@ export default function Volcano() {
 
 
     return (
-        <div className="volcano container d-block mx-auto">
-            <div className="content-container">
+        <div className = "container">
+            <div className="volcano">
+                <div className="content-container">
 
-                <div className="page-title-container">
-                    <h2>Volcano Name : {searchParams.get("name")}</h2>
-                </div>
-                <div className="container">
+                    <div className="page-title-container">
+                        <h2>Volcano Name : {searchParams.get("name")}</h2>
+                    </div>
+                    <div className="info-container">
 
-                    <div className="volcano_info ">
+                        <div className="volcano_info ">
 
-                        <p>Country: {volcanoData.country}</p>
-                        <p>Region: {volcanoData.region}</p>
-                        <p>Subregion: {volcanoData.subregion}</p>
-                        <p>Last Eruption: {volcanoData.last_eruption}</p>
-                        <p>Summit: {volcanoData.summit} m</p>
-                        <p>Elevation: {volcanoData.elevation} ft</p>
-                        <p>Latitude: {volcanoData.latitude} &deg;</p>
-                        <p>Longitude: {volcanoData.longitude} &deg;</p>
-                        {
-                            isLoggedIn ? (
-                                <div className="div">
-                                    <p>population_5km: {volcanoData.population_5km} km</p>
-                                    <p>population_10km: {volcanoData.population_10km} km</p>
-                                    <p>population_30km: {volcanoData.population_30km} km</p>
-                                    <p>population_100km: {volcanoData.population_100km} km</p>
+                            <p>Country: {volcanoData.country}</p>
+                            <p>Region: {volcanoData.region}</p>
+                            <p>Subregion: {volcanoData.subregion}</p>
+                            <p>Last Eruption: {volcanoData.last_eruption}</p>
+                            <p>Summit: {volcanoData.summit} m</p>
+                            <p>Elevation: {volcanoData.elevation} ft</p>
+                            <p>Latitude: {volcanoData.latitude} &deg;</p>
+                            <p>Longitude: {volcanoData.longitude} &deg;</p>
+                            {
+                                isLoggedIn ? (
+                                    <div className="div">
+                                        <p>Population within 5km: {volcanoData.population_5km} </p>
+                                        <p>Population within 10km: {volcanoData.population_10km} </p>
+                                        <p>Population within 30km: {volcanoData.population_30km} </p>
+                                        <p>Population within 100km: {volcanoData.population_100km} </p>
+                                    </div>
+                                )
+                                    : <div></div>
+                            }
+                            <Button color="secondary"
+                                onClick={() => navigate("/volcano_list")}
+                            >Back
+                            </Button>
+                        </div>
+
+                        <div className="map overflow-hidden rounded">
+                            <Map
+                                height="500px"
+                                width="700px"
+                                provider={maptilerProvider}
+                                dprs={[1, 2]} // this provider supports HiDPI tiles
+                                center={center}
+                                zoom={zoom}
+                                onBoundsChanged={({ center, zoom }) => {
+                                    setCenter(center)
+                                    setZoom(zoom)
+                                }}
+                            >
+                                <Marker
+                                    width={50}
+                                    anchor={[+volcanoData.latitude, +volcanoData.longitude]}
+                                    color={color}
+                                    onClick={() => setHue(hue + 20)}
+                                />
+                            </Map>
+                            
+                        </div>
+                    </div>
+                    
+                    {
+                        isLoggedIn ? (
+                            <div className="chart-container">
+                                <div className="Chart">
+                                    <Bar
+                                        height={100}
+                                        data={{
+                                            labels: ["Population within 5km", "Population within 10km", "Population within 30km"],
+                                            datasets: [
+                                                {
+                                                    label: "Population",
+                                                    data: [volcanoData.population_5km, volcanoData.population_10km, volcanoData.population_30km],
+                                                    borderRadius: 10,
+                                                }
+                                            ],
+
+                                        }}
+                                        options={{
+                                            plugins: {
+                                                title: {
+                                                    display: true,
+                                                    text: "Population density within the radius of volcano",
+                                                    fontSize: 30,
+                                                },
+                                            }
+                                        }}
+                                    />
                                 </div>
-                            )
-                                : <div></div>
-                        }
-                        <Button color="secondary"
-                            onClick={() => navigate("/volcano_list")}
-                        >Back
-                        </Button>
-                    </div>
 
-                    <div className="map mb-2 shadow-sm overflow-hidden rounded">
-                        <Map
-                            height="500px"
-                            width="700px"
-                            provider={maptilerProvider}
-                            dprs={[1, 2]} // this provider supports HiDPI tiles
-                            center={center}
-                            zoom={zoom}
-                            onBoundsChanged={({ center, zoom }) => {
-                                setCenter(center)
-                                setZoom(zoom)
-                            }}
-                        >
-                            <Marker
-                                width={50}
-                                anchor={[+volcanoData.latitude, +volcanoData.longitude]}
-                                color={color}
-                                onClick={() => setHue(hue + 20)}
-                            />
-                        </Map>
-                    </div>
-
+                            </div>
+                        ) : <div></div>
+                    }
                 </div>
-            </div>
 
+            </div>
         </div>
 
     )
