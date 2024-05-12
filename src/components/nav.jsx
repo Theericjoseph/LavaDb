@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useLogin } from '../context/LoginProvider';
 
 export default function Nav() {
@@ -15,10 +15,10 @@ export default function Nav() {
         <nav>
             <ul>
                 <li>
-                    <Link to="/" >Home</Link>
+                    <NavLink to="/" >Home</NavLink>
                 </li>
                 <li>
-                    <Link to="/volcano_list" >Volcano List</Link>
+                    <NavLink to="/volcano_list" >Volcano List</NavLink>
                 </li>
 
                 {
@@ -27,7 +27,7 @@ export default function Nav() {
                             <Link onClick={logout}>Logout</Link>
                         </li> :
                         <li>
-                            <Link to="/login">Login</Link>
+                            <NavLink to="/login">Login</NavLink>
                         </li>
                 }
 

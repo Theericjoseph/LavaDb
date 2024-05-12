@@ -16,8 +16,10 @@ body {
 
 body {
   background: #fff;
-  font-family: Arial, Helvetica, sans-serif;
-  background: url("../public/img/Background.jpg") no-repeat center center;
+  font-family: 'Roboto', sans-serif;
+  background: url("../public/img/Background.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
   background-size: cover;
-  background-position: center;
+  min-height: 100vh;
 }

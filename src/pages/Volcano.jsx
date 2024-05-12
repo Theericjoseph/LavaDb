@@ -101,7 +101,7 @@ export default function Volcano() {
                                         <p>Population within 100km: {volcanoData.population_100km} </p>
                                     </div>
                                 )
-                                    : <div></div>
+                                    : <div>To get access to more information <a href="/login">Login now</a></div>
                             }
                             <Button color="secondary"
                                 onClick={() => navigate("/volcano_list")}

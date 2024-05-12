@@ -8,6 +8,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css"
 import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
 import { SearchResultsList } from "../components/SearchResultsList";
+import { Badge } from "reactstrap";
 
 export default function VolcanoList() {
     const [rowData, setRowData] = useState([]);
@@ -51,7 +52,6 @@ export default function VolcanoList() {
     const handleCountrySelect = (selectedCountry) => {
         setInput(selectedCountry)
         setResults([])
-
     }
 
     return (
@@ -59,7 +59,6 @@ export default function VolcanoList() {
             <div className="input-field">
                 <div className="search-bar-container">
                     <SearchBar setResults={setResults} input={input} setInput={setInput} />
-
                 </div>
                 <div className="populated-container">
                     <label htmlFor="populated_within" hidden>Populated within: </label>
@@ -89,7 +88,8 @@ export default function VolcanoList() {
             {
                 country.length === 0 ? <div></div> :
                     <div className="table_container">
-                        <div id="myGrid" className="ag-theme-alpine-dark"
+                        <p><Badge color="success" className="badge">{rowData.length}</Badge> results for {country}. Click on a country to see additional information.</p>
+                        <div id="myGrid" className="ag-theme-alpine"
                             style={{
                                 height: "40rem",
                                 width: "100%"

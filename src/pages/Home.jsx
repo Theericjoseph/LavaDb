@@ -18,21 +18,14 @@ export default function Home() {
                     </div>
 
                     <div className="button-div">
-                        <Button
-                            color="secondary"
-                            size="lg"
-                            outline
-                            onClick={() => navigate("/login")}
-                        >
-                            Login
-                        </Button>
+                        
                         <Button
                             color="secondary"
                             size="lg"
                             outline
                             onClick={() => navigate("/volcano_list")}
                         >
-                            Volcano
+                            Get Started Now
                         </Button>
                     </div>
                 </div>

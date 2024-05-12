@@ -36,7 +36,7 @@ export const SearchBar = ({ setResults, input, setInput }) => {
     return (
         <div className="input-wrapper">
             <FaSearch id="search-icon" />
-            <input placeholder="Type a countries name"
+            <input placeholder="Start typing a countries name"
                 value={input}
                 onChange={handleChange} />
         </div>
