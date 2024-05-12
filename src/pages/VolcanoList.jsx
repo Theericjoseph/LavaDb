@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { SearchBar } from "../components/SearchBar";
 import { SearchResultsList } from "../components/SearchResultsList";
 import { Badge } from "reactstrap";
+import { AnimatedGif } from "../components/AnimatedGif";
 
 export default function VolcanoList() {
     const [rowData, setRowData] = useState([]);
@@ -20,10 +21,10 @@ export default function VolcanoList() {
     const [results, setResults] = useState([]);
 
     const columns = [
-        { headerName: "ID", field: "id", flex: 1 },
-        { headerName: "Name", field: "name", flex: 2 },
-        { headerName: "Region", field: "region", flex: 2 },
-        { headerName: "Sub Region", field: "subregion", flex: 2 },
+        { headerName: "ID", field: "id", flex: 1, filter: true},
+        { headerName: "Name", field: "name", flex: 2, filter: true},
+        { headerName: "Region", field: "region", flex: 2, filter: true},
+        { headerName: "Sub Region", field: "subregion", flex: 2, filter: true},
     ];
 
     useEffect(() => {
@@ -66,7 +67,7 @@ export default function VolcanoList() {
                         value={dropDownValue}
                         onChange={(e) => setDropDownvalue(e.target.value)}
                     >
-                        <option value="">Select a distance</option>
+                        <option value="">Select a populated within distance</option>
                         <option value="&populatedWithin=5km">5km</option>
                         <option value="&populatedWithin=10km" >10km</option>
                         <option value="&populatedWithin=30km">30km</option>
@@ -86,7 +87,12 @@ export default function VolcanoList() {
                 <SearchResultsList results={results} onCountrySelect={handleCountrySelect} />
             </div>
             {
-                country.length === 0 ? <div></div> :
+                country.length === 0 ? <div className="no_result">
+                    <div className="img-div">
+                        <AnimatedGif src="./img/no-search-result.png" alt="A img of a magnifying glass" />
+                    </div>
+                    <p>Search a country name to get started</p>
+                </div> :
                     <div className="table_container">
                         <p><Badge color="success" className="badge">{rowData.length}</Badge> results for {country}. Click on a country to see additional information.</p>
                         <div id="myGrid" className="ag-theme-alpine"

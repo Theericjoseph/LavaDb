@@ -38,7 +38,7 @@ export default function Login() {
                     localStorage.setItem("token", res.token);
                     setIsLoggedIn(true);
                     setMessage(res.message);
-                    navigate("/");
+                    navigate(-1);
                 })
             )
             .catch((error) => console.log(error));

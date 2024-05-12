@@ -136,3 +136,23 @@ input:focus {
     color: black;
     cursor: pointer;
 }
+
+.no_result {
+    background:transparent;
+    border: 2px solid rgba(255, 255, 255, .2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(30px);
+    border-radius: 10px;
+    margin: auto;
+    width: 50%;
+    margin-top: 5rem;
+    text-align: center;
+    padding: 1rem;
+}
+.no_result p {
+    color: white;
+    font: bolder 1.5rem 'Roboto', sans-serif;
+}
+.img-div img{
+    height: 20rem;
+}
